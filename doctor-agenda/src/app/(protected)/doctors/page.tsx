@@ -22,18 +22,23 @@ const DoctorsPage = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+
   if (!session?.user) {
     redirect("/authentication");
   }
-  if (!session.user.plan) {
-    redirect("/new-subscription");
-  }
+
+  // if (!session.user.plan) {
+  //   redirect("/new-subscription");
+  // }
+
   if (!session.user.clinic) {
     redirect("/clinic-form");
   }
+
   const doctors = await db.query.doctorsTable.findMany({
     where: eq(doctorsTable.clinicId, session.user.clinic.id),
   });
+
   return (
     <PageContainer>
       <PageHeader>
